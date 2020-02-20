@@ -77,7 +77,7 @@ public class AdministratorController {
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
 		model.addAttribute("administratorService", administratorService);
-		
+
 		return "redirect:/insert2";
 
 	}
@@ -110,6 +110,7 @@ public class AdministratorController {
 	@RequestMapping("/login")
 	public String login(LoginForm form, BindingResult result, Model model) {
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
+		session.setAttribute("administrator", administrator);
 		if (administrator == null) {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
