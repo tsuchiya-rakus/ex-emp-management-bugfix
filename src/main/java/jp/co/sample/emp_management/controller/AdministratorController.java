@@ -78,14 +78,11 @@ public class AdministratorController {
 		administratorService.insert(administrator);
 		model.addAttribute("administratorService", administratorService);
 
-		return "redirect:/insert2";
+		return "redirect:/";
 
 	}
 
-	@RequestMapping("/insert2")
-	public String insert2() {
-		return "administrator/login";
-	}
+
 
 	/////////////////////////////////////////////////////
 	// ユースケース：ログインをする
