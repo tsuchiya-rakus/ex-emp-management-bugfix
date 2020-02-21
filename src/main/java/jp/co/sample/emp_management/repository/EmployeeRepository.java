@@ -56,6 +56,7 @@ public class EmployeeRepository {
 
 		return developmentList;
 	}
+	
 
 	/**
 	 * 主キーから従業員情報を取得します.
@@ -91,3 +92,10 @@ public class EmployeeRepository {
 		return employeeList;
 	}
 }
+
+
+
+
+//String countSql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM" 
+//
+//Integer total = 

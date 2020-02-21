@@ -56,6 +56,7 @@
 		</ol>
 		
 		<form th:action="@{/employee/findByAmbiguousName}" method="post">
+		<div th:text="${errorMessage}"></div>
 		<input type="text" name="name">
 		<button>検索</button>
 		</form>

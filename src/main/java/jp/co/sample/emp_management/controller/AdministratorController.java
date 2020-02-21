@@ -69,8 +69,6 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-		Administrator administrator = new Administrator();
-		Administrator administrator2 = administratorService.checkMailAddress(form.getMailAddress());
 		// メールアドレス検索で検索が成功したらadministrator2はnullじゃない
 		// もし重複せずに、エラー（空欄）がなかったらフォームの値をインサートしログイン画面に遷移
 		// もし重複せずに、エラー（空欄）があったら登録画面に遷移（エラー文発生）
@@ -86,22 +84,24 @@ public class AdministratorController {
 //		}
 //		return "redirect:/";
 //	}
-
 		if (!(form.getPassword().equals(form.getConfirmPassword()))) {
 			result.rejectValue("confirmPassword", null, "パスワードと異なります");
 		}
-		if (administrator2 == null) {
-			if (!(result.hasErrors())) {
-				BeanUtils.copyProperties(form, administrator);
-				administratorService.insert(administrator);
-				return "redirect:/";
-			} else {
-				return toInsert();
-			}
-		} else {
+		
+		if(administratorService.checkMailAddress(form.getMailAddress()) != null) {
 			result.rejectValue("mailAddress", null, "そのメールアドレスは既に登録されています");
+		}
+		
+		if(result.hasErrors()) {
 			return toInsert();
 		}
+		
+		Administrator administrator = new Administrator();
+		BeanUtils.copyProperties(form, administrator);
+		administratorService.insert(administrator);
+		return "redirect:/";
+		
+
 	}
 
 	/////////////////////////////////////////////////////
