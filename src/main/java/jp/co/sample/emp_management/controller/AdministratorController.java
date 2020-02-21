@@ -69,20 +69,39 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-		if (result.hasErrors()) {
+		Administrator administrator = new Administrator();
+		Administrator administrator2 = administratorService.checkMailAddress(form.getMailAddress());
+		// メールアドレス検索で検索が成功したらadministrator2はnullじゃない
+		// もし重複せずに、エラー（空欄）がなかったらフォームの値をインサートしログイン画面に遷移
+		// もし重複せずに、エラー（空欄）があったら登録画面に遷移（エラー文発生）
+		// もし重複したら、バインディングリザルトにリジェクトバーリューで文言を入れ登録画面に遷移（手動でエラーを作る）
+//		if (administrator2 != null) {
+//			result.rejectValue("mailAddress", null, "そのメールアドレスは既に登録されています");
+//			result.hasErrors();
+//			return toInsert();
+//		}
+//		if (administrator2 == null) {
+//			BeanUtils.copyProperties(form, administrator);
+//			administratorService.insert(administrator);
+//		}
+//		return "redirect:/";
+//	}
+		if(!(form.getPassword().equals(form.getConfirmPassword()))){
+			result.rejectValue("confirmPassword", null, "パスワードと異なります");
+		}
+		if (administrator2 == null) {
+			if (!(result.hasErrors())) {
+				BeanUtils.copyProperties(form, administrator);
+				administratorService.insert(administrator);
+				return "redirect:/";
+			} else {
+				return toInsert();
+			}
+		} else {
+			result.rejectValue("mailAddress", null, "そのメールアドレスは既に登録されています");
 			return toInsert();
 		}
-		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
-		model.addAttribute("administratorService", administratorService);
-
-		return "redirect:/";
-
 	}
-
-
 
 	/////////////////////////////////////////////////////
 	// ユースケース：ログインをする
