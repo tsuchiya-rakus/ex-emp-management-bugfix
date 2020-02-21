@@ -86,7 +86,8 @@ public class AdministratorController {
 //		}
 //		return "redirect:/";
 //	}
-		if(!(form.getPassword().equals(form.getConfirmPassword()))){
+
+		if (!(form.getPassword().equals(form.getConfirmPassword()))) {
 			result.rejectValue("confirmPassword", null, "パスワードと異なります");
 		}
 		if (administrator2 == null) {
