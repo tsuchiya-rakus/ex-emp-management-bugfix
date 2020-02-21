@@ -52,6 +52,13 @@ public class EmployeeController {
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
+	@RequestMapping("/findByAmbiguousName")
+	public String findByAmbiguousName(Model model,String name) {
+		System.out.println(name);
+		List<Employee> employeeList = employeeService.findByAmbiguousName(name);
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
+	}
 
 	
 	/////////////////////////////////////////////////////
